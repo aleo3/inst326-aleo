@@ -6,20 +6,13 @@ def format_search_results(results):
     for i, result in enumerate(results[:10], 1):  # Limit to top 10
         title = result.get("title", "No Title")
         snippet = result.get("snippet", "No description available.")
-        formatted.append(f"{i}. {title}\n   {snippet}\n")
-    
+        formatted.append(f"{i}. {title}\n   {snippet}\n")    
     return "\n".join(formatted)
 
 
-
 def calculate_relevance_scores(query, records, fields_weights):
-    """
-    Calculate relevance scores for records based on a query.
-    - query: string query (space-separated terms)
-    - records: list of dicts, each representing a data record with multiple fields
-    - fields_weights: dict mapping field names to their importance weights (e.g., {'title': 2, 'desc': 1})
-    Returns: list of relevance scores corresponding to each record
-    """
+    # Calculate relevance scores for records based on a query.
+    # Returns: list of relevance scores corresponding to each record
     query_terms = query.lower().split()
     scores = []
 
@@ -34,25 +27,12 @@ def calculate_relevance_scores(query, records, fields_weights):
             for qt in query_terms:
                 score += term_freq.get(qt, 0) * weight
         scores.append(score)
-
     return scores
 
 
-
-
-from collections import Counter, defaultdict
 import math
-
 def generate_data_report(records):
-    """
-    Generates a simple data report from a list of dictionaries (records).
-    The report includes:
-    - Total number of records
-    - Count of missing values per field
-    - Summary statistics for numeric fields (count, mean, std dev, min, max)
-    - Summary for categorical fields (count, unique values, top 3 frequent values)
-    """
-
+    # Generates a simple data report from a list of dictionaries (records).
     if not records:
         return "No data available."
 
@@ -73,8 +53,7 @@ def generate_data_report(records):
                     categorical_fields.add(field)
                 break
 
-    # Track missing values count per field
-    missing_counts = defaultdict(int)
+    missing_counts = defaultdict(int)    # Track missing values count per field
 
     # Store values for numeric and categorical fields separately
     numeric_values = defaultdict(list)
@@ -130,5 +109,4 @@ def generate_data_report(records):
         "numeric_fields_summary": numeric_summary,
         "categorical_fields_summary": categorical_summary,
     }
-
     return report
